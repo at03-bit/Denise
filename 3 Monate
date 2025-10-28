@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eine Nachricht für Denise</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #FFF5F7;
+            --text-color: #5D4037;
+            --header-color: #D81B60;
+            --button-bg: #D81B60;
+            --button-text: #FFFFFF;
+            --container-bg: #FFFFFF;
+            --error-color: #D32F2F; 
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Lato', sans-serif;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: var(--container-bg);
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1, h2 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--header-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        h1 { font-size: 3.5rem; }
+        h2 { font-size: 2.8rem; }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .button {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            font-family: 'Lato', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(216, 27, 96, 0.3);
+        }
+
+        #mcq-page,
+        #final-page {
+            display: none; 
+        }
+
+        .question {
+            text-align: left;
+            margin-top: 30px;
+        }
+
+        .question p {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        .options li {
+            background-color: #F9F9F9;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border: 1px solid #EEE;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .options li label { display: block; cursor: pointer; }
+        .options li input { margin-right: 10px; }
+
+        #error-message {
+            display: none;
+            color: var(--error-color);
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .reveal-on-demand {
+            display: none;
+        }
+
+        #video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 0px; 
+            padding-bottom: 177.778%; 
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/audio/2022/11/17/audio_8c87e91404.mp3" type="audio/mpeg">
+    </audio>
+
+
+    <div class="container">
+        
+        <div id="verification-page">
+            <h1>Hallo Denise!</h1>
+            <p>Bitte verifiziere, dass du es bist, bevor du weitermachst.</p>
+            <button class="button" onclick="showQuestions()">Ich bin's! (Klick mich)</button>
+        </div>
+
+        <div id="mcq-page">
+            <h1>Das Quiz!</h1>
+            <div class="question"><p>1. Wie heißt die Katze von Denise?</p><ul class="options"><li><label><input type="radio" name="q1" value="a"> Luna</label></li><li><label><input type="radio" name="q1" value="b"> Felix</label></li><li><label><input type="radio" name="q1" value="c"> Mauzi</label></li><li><label><input type="radio" name="q1" value="d"> Simba</label></li></ul></div>
+            <div class="question"><p>2. Wo wohnt Denise?</p><ul class="options"><li><label><input type="radio" name="q2" value="a"> Leipzig</label></li><li><label><input type="radio" name="q2" value="b"> Machern</label></li><li><label><input type="radio" name="q2" value="c"> Berlin</label></li><li><label><input type="radio" name="q2" value="d"> Wurzen</label></li></ul></div>
+            <div class="question"><p>3. Welchen Film hat Denise mit ihrem Freund dieses Wochenende geschaut?</p><ul class="options"><li><label><input type="radio" name="q3" value="a"> Fack ju Göthe</label></li><li><label><input type="radio" name="q3" value="b"> Issi und Ossi</label></li><li><label><input type="radio" name="q3" value="c"> In guten wie in schweren Tagen</label></li><li><label><input type="radio" name="q3" value="d"> Scary Movie</label></li></ul></div>
+            <div class="question"><p>4. Wann steht sie normalerweise auf?</p><ul class="options"><li><label><input type="radio" name="q4" value="a"> 5 Uhr</label></li><li><label><input type="radio" name="q4" value="b"> 7 Uhr</label></li><li><label><input type="radio" name="q4" value="c"> 8 Uhr</label></li><li><label><input type="radio" name="q4" value="d"> 6 Uhr</label></li></ul></div>
+            <div class="question"><p>5. Was ist ihr Lieblingssnack?</p><ul class="options"><li><label><input type="radio" name="q5" value="a"> Tomaten</label></li><li><label><input type="radio" name="q5" value="b"> Saure Gurken</label></li><li><label><input type="radio" name="q5" value="c"> Sauerkraut</label></li><li><label><input type="radio" name="q5" value="d"> Alle</label></li></ul></div>
+
+            <button class="button" onclick="checkAnswers()">Antworten prüfen</button>
+            <p id="error-message">Oh oh! Einige Antworten sind nicht ganz richtig. Versuch es nochmal!</p>
+        </div>
+
+        <div id="final-page">
+            
+            <h2 id="final-heading" class="reveal-on-demand">Du hast es bewiesen! ❤️</h2>
+            
+            <div id="video-wrapper" class="reveal-on-demand">
+                <iframe allow="fullscreen" allowfullscreen height="100%" src="https://streamable.com/e/023nri?autoplay=1&muted=1" width="100%"></iframe>
+            </div>
+            
+            <div style="text-align: left; margin-top: 30px;">
+                <p id="text-chunk-1" class="reveal-on-demand" style="font-family: 'Dancing Script', cursive; color: var(--header-color); font-size: 1.5rem; text-align: center; margin-top: 20px;">
+                    Hallo Schatzi,
+                </p>
+                <p id="text-chunk-2" class="reveal-on-demand">Heute sind es schon drei Monate, seitdem wir zusammen sind – und trotzdem fühlt es sich an, als würde ich dich schon seit Jahren kennen.</p>
+                <p id="text-chunk-3" class="reveal-on-demand">Ich liebe dich so, so sehr.</p>
+                <p id="text-chunk-4" class="reveal-on-demand">Ich liebe dich – deine Augen, deine Haare, dein Gesicht, deinen Körper, deine Persönlichkeit, deine Denkweise, alles, was du backst, alles, was du kochst, deine Stimme, dein Lächeln, dich, wenn du lachst… sogar einfach, dass du existierst. Mit jedem Tag liebe ich dich mehr und mehr.</p>
+                <p id="text-chunk-5" class="reveal-on-demand">Ich hasse es – und liebe es gleichzeitig –, wie schnell die Zeit mit dir vergeht. Deine Stimme motiviert mich, wenn ich Motivation brauche, und deine bloße Existenz bringt so viel Freude in mein Leben.</p>
+                <p id="text-chunk-6" class="reveal-on-demand">Ich war in dich verliebt, vom allerersten Moment an, als ich dich gesehen habe – und ich konnte kaum glauben, dass jemand wie du wirklich existiert.</p>
+                <p id="text-chunk-7" class="reveal-on-demand">Ich bin unendlich dankbar, dass ich die Chance hatte, dich kennenzulernen, dass wir uns treffen durften, und dass du dieses Bauchgefühl hattest, dass du mich treffen solltest.</p>
+                <p id="text-chunk-8" class="reveal-on-demand">Danke dir dafür – von ganzem Herzen. Ich liebe dich unendlich.</p>
+                <p id="text-chunk-9" class="reveal-on-demand">Ich liebe es, Zeit mit dir zu verbringen. Ich liebe es, für dich zu kochen. Meine größte Freude ist es, dich glücklich zu machen, dich zum Lächeln zu bringen und dich so zu behandeln, wie eine so tolle, liebevolle Person wie du es verdienst.</p>
+                <p id="text-chunk-10" class="reveal-on-demand">Diese drei Monate waren eine der schönsten Zeiten meines Lebens, und ich will den Rest meines Lebens mit dir verbringen.</p>
+                <p id="text-chunk-11" class="reveal-on-demand">Ich liebe dich wirklich so, so sehr, Schatz.</p>
+                <p id="text-chunk-12" class="reveal-on-demand">Und es ist mir egal, ob du manchmal traurig bist oder nicht so gute Laune hast – ich werde dich trotzdem lieben und immer für dich da sein.</p>
+                <p id="text-chunk-13" class="reveal-on-demand">Denn ich will nicht nur dein Freund sein, sondern auch dein bester Freund – jemand, dem du alles anvertrauen kannst. ❤️</p>
+                
+                <h2 id="text-chunk-14" class="reveal-on-demand" style="font-size: 3.5rem; text-align: center; margin-top: 40px; font-family: 'Dancing Script', cursive; color: var(--header-color);">
+                    Ich liebe dich ❤️
+                </h2>
+            </div>
+
+            <button class="button reveal-on-demand" id="final-next-button" onclick="showNextStep()">Weiter</button>
+            
+        </div>
+
+    </div>
+
+    <script>
+        let finalStepCounter = 0;
+        const totalTextChunks = 14; 
+
+        function showQuestions() {
+            document.getElementById('verification-page').style.display = 'none';
+            document.getElementById('mcq-page').style.display = 'block';
+            
+            // --- MUSIK WURDE VON HIER ENTFERNT ---
+        }
+
+        function revealElement(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.display = 'block'; 
+                el.classList.add('fade-in-up');
+            }
+        }
+
+        function startFinalSequence() {
+            // --- MUSIK STARTET JETZT HIER (VIEL ZUVERLÄSSIGER) ---
+            const music = document.getElementById('bg-music');
+            music.play().catch(error => {
+                console.log("Musik-Autoplay wurde vom Browser blockiert.");
+            });
+            
+            document.getElementById('mcq-page').style.display = 'none';
+            document.getElementById('final-page').style.display = 'block';
+
+            revealElement('final-heading');
+            setTimeout(() => revealElement('video-wrapper'), 1000); 
+            setTimeout(() => revealElement('final-next-button'), 2000); 
+        }
+
+        function showNextStep() {
+            finalStepCounter++; 
+
+            if (finalStepCounter >= 1 && finalStepCounter <= totalTextChunks) {
+                revealElement('text-chunk-' + finalStepCounter);
+            }
+
+            const nextButton = document.getElementById('final-next-button');
+
+            if (finalStepCounter === totalTextChunks) {
+                nextButton.style.display = 'none';
+            } else {
+                setTimeout(() => {
+                    nextButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 400); 
+            }
+        }
+
+        function checkAnswers() {
+            const correctAnswers = { q1: 'c', q2: 'b', q3: 'b', q4: 'd', q5: 'd' };
+            let allCorrect = true;
+            let allAnswered = true;
+            const errorMessage = document.getElementById('error-message');
+
+            for (let i = 1; i <= 5; i++) {
+                const questionName = 'q' + i;
+                const selectedOption = document.querySelector('input[name="' + questionName + '"]:checked');
+                if (selectedOption) {
+                    if (selectedOption.value !== correctAnswers[questionName]) {
+                        allCorrect = false;
+                    }
+                } else {
+                    allAnswered = false;
+                }
+            }
+
+            if (allCorrect) {
+                startFinalSequence(); // Starte die animierte Sequenz (die jetzt Musik enthält)
+            } else if (!allAnswered) {
+                errorMessage.innerText = "Bitte beantworte alle Fragen!";
+                errorMessage.style.display = 'block';
+            } else {
+                errorMessage.innerText = "Oh oh! Einige Antworten sind nicht ganz richtig. Versuch es nochmal!";
+                errorMessage.style.display = 'block';
+            }
+        }
+    </script>
+
+</body>
+</html>
